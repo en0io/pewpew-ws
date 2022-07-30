@@ -88,3 +88,14 @@ body {
     right:-18px;
     cursor:pointer;
 }
+.toggle
+{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.disconnected{
+    color:red;
+}
+.connected{
+    color:deepskyblue;
+}
