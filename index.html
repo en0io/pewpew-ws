@@ -149,7 +149,7 @@
         location.reload();
     });
 
-    var socket = io("http://localhost:3000");
+    var socket = io("https://"+window.location.hostname+":3000");
     socket.on("alert", (message) => {
         console.log(message.event_data);
         pushToAttackDiv(message.event_data);
