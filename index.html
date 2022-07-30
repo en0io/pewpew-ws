@@ -1,99 +1,6 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  background: black;
-}
-
-#titlediv {
-  font-family: monospace;
-  text-align: center;
-  font-size:48px;
-  position:fixed;
-  width:100%;
-  height:50px;
-  color:white;
-  background-color:black;
-  padding:5px;
-  top:0px;
-  overflow-y: auto;
-}
-
-#attackdiv {
-  font-family: monospace;
-  font-size:10px;
-  position:fixed;
-  width:50%;
-  height:100px;
-  color:white;
-  background-color:black;
-  padding:5px;
-  bottom:0px;
-  overflow-y: auto;
-}
-
-#container1 {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  max-width:100%;
-  max-height:100%
-}
-
-#about {
-  display: hidden;
-}
-
-#aboutdiv {
-  text-align:right;
-  width:100px;
-  height:100px;
-  top:0px;
-  right:0px;
-  position:fixed;
-  padding:10px;
-  color: white;
-}
-
-#ccdiv {
-  text-align:right;
-  width:100px;
-  height:20px;
-  bottom:0px;
-  right:0px;
-  position:fixed;
-  padding:5px;
-  color: white;
-}
-
-#about {display:none;}
-
-/* Overlay */
-#simplemodal-overlay {background-color:#000;}
-
-/* Container */
-#simplemodal-container {height:460px; width:600px; color:#bbb; background-color:#333; border:4px solid #444; padding:12px;}
-#simplemodal-container .simplemodal-data {padding:8px;}
-#simplemodal-container code {background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px;}
-#simplemodal-container a {color:#ddd;}
-#simplemodal-container a.modalCloseImg {background:url(../img/basic/x.png) no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
-#simplemodal-container h3 {color:#84b8d9;}
-#simplemodal-container a.modalCloseImg {
-  background:url(x.png) no-repeat; /* adjust url as required */
-  width:25px;
-  height:29px;
-  display:inline;
-  z-index:3200;
-  position:absolute;
-  top:-15px;
-  right:-18px;
-  cursor:pointer;
-}
-
-</style>
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
@@ -107,22 +14,15 @@ function about() {
   $("#about").modal();
 }
 </script>
-
+<link href="static/app.css" rel="stylesheet">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 </head>
 
 <body>
+  <audio id="chirp" src="static/chirp.mp3" preload="auto"></audio>
 
-  <audio id="starwars" src="Blaster-Solo.wav" preload="auto"></audio>
-  <audio id="tng" src="tng_torpedo_clean.mp3" preload="auto"></audio>
-  <audio id="b5" src="B5-interceptor1.wav" preload="auto"></audio>
-  <audio id="wargames" src="WarGames-KeyPress.wav" preload="auto"></audio>
-  <audio id="pew" src="pew.mp3" preload="auto"></audio>
-  <audio id="galaga" src="shot_sound.mp3" preload="auto"></audio>
-  <audio id="asteroids" src="asteroids.mp3" preload="auto"></audio>
-  <audio id="china" src="china.mp3" preload="auto"></audio>
-  <audio id="timallen" src="timallen.wav" preload="auto"></audio>
+
 
   <center><div id="container1"></div></center>
   <div id="titlediv">IPew Attack Map</div>
@@ -163,7 +63,7 @@ function about() {
 
     // gotta add types here if you add more sounds (or delete them)
 
-    audio_type = [ "starwars", "tng", "b5", "wargames", "pew", "galaga", "asteroids", "china", "timallen" ]
+    audio_type = [ "chirp" ];
 
     // need this to more easily grab URI query parameters
     $.extend({
@@ -448,7 +348,7 @@ function about() {
              srclat = centers[center_id].LAT;
              srclong = centers[center_id].LONG;
            }
-           
+
            // Specify a destination country
            if (typeof destination !== 'undefined' && getDestination() < 80) {
              dstcountry = destination.toUpperCase();
@@ -527,6 +427,6 @@ function about() {
     d3.select(window).on('resize', function() { location.reload(); });
 
 </script>
-   
+
 </body>
 </html>
