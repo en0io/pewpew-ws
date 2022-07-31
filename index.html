@@ -174,11 +174,13 @@
     function about() {
         $("#about").modal();
     }
-    colorIndex=0;
+
+    colorIndex = 0;
+
     function getColor() {
-        colors = ['darkviolet', 'deepskyblue', 'forestgreen', 'yellow', 'orange', 'red',];
+        colors = ['darkviolet', 'darkmagenta', 'deepskyblue', 'mediumspringgreen', 'gold', 'orange', 'red',];
         color = colors[colorIndex];
-        if (colorIndex < colors.length-1) {
+        if (colorIndex < colors.length - 1) {
             colorIndex++;
         } else {
             colorIndex = 0;
