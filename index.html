@@ -10,22 +10,22 @@
     <script src="static/socket.io.js"></script>
     <link href="static/app.css" rel="stylesheet">
     <link href="static/font-awesome.min.css" rel="stylesheet">
+    <title>Project Maka Live Map</title>
 </head>
 <body>
 <audio id="chirp" src="static/chirp.mp3" preload="auto"></audio>
 
-
 <center>
     <div id="container1"></div>
 </center>
-<div id="titlediv">Project Maka Attack Map (<span id="connstat" class="disconnected">disconnected</span>)</div>
+<div id="titlediv">Project Maka Live Map (<span id="connstat" class="disconnected">disconnected</span>)</div>
 <div id="attackdiv"></div>
 <div id="aboutdiv"><i class="fa fa-gear fa-2x" onClick="about();"></i></div>
 
 <div id="ccdiv">
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License"
                                                                                 style="border-width:0"
-                                                                                src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"/></a>
+                                                                                src="static/80x15.png"/></a>
 </div>
 
 <div id="about">
@@ -69,20 +69,14 @@
 <a href="#!" class="modal-close" title="Close this modal"
    data-dismiss="modal" data-close="Close">&times;</a>
 
-
 <script>
     optionSound = false;
     optionRainbows = true;
-
     var map = new Datamap({
-
         scope: 'world',
         element: document.getElementById('container1'),
         projection: 'winkel3',
-        // change the projection to something else only if you have absolutely no cartographic sense
-
         fills: {defaultFill: 'black',},
-
         geographyConfig: {
             dataUrl: null,
             hideAntarctica: true,
@@ -98,7 +92,6 @@
             highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
             highlightBorderWidth: 2
         },
-
     })
 
     function FixedQueue(size, initialValues) {
@@ -118,7 +111,6 @@
         }
         Array.prototype.splice.call(this, 0, (this.length - this.fixedSize));
     };
-
     FixedQueue.trimTail = function () {
         if (this.length <= this.fixedSize) {
             return;
@@ -126,7 +118,6 @@
         Array.prototype.splice.call(this, this.fixedSize, (this.length - this.fixedSize)
         );
     };
-
     FixedQueue.wrapMethod = function (methodName, trimMethod) {
         var wrapper = function () {
             var method = Array.prototype[methodName];
