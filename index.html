@@ -73,7 +73,7 @@
 <script>
     optionSound = false;
     optionRainbows = true;
-
+    colorIndex = 0;
 
     var map = new Datamap({
 
@@ -176,10 +176,20 @@
         $("#about").modal();
     }
 
+    function getColor() {
+        colors = ['darkviolet', 'deepskyblue', 'forestgreen', 'yellow', 'orange', 'red',];
+        color = colors[colorIndex];
+        if (colorIndex < colors.length-1) {
+            colorIndex++;
+        } else {
+            colorIndex = 0;
+        }
+        return color;
+    }
+
     function drawHit(eventdata) {
         if (optionRainbows === true) {
-            colors = ['darkviolet', 'blue', 'forestgreen', 'yellow', 'orange', 'red', 'deepskyblue'];
-            color = colors[Math.floor(Math.random() * colors.length)]
+            color = getColor();
         } else {
             color = 'red';
         }
