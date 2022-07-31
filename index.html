@@ -73,7 +73,6 @@
 <script>
     optionSound = false;
     optionRainbows = true;
-    colorIndex = 0;
 
     var map = new Datamap({
 
@@ -175,7 +174,7 @@
     function about() {
         $("#about").modal();
     }
-
+    colorIndex=0;
     function getColor() {
         colors = ['darkviolet', 'deepskyblue', 'forestgreen', 'yellow', 'orange', 'red',];
         color = colors[colorIndex];
