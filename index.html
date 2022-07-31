@@ -206,7 +206,7 @@
 
     function pushToAttackDiv(eventdata) {
         attack = eventdata.split(",");
-        $('#attackdiv').append(attack[4] + " (" + attack[0] + ") " +
+        $('#attackdiv').append(attack[4] + " (" + attack[0] + ","+attack[1]+") " +
             " <span style='color:red'>attacks</span> " +
             attack[7] +
             " <span style='color:steelblue'>(" + attack[8] + "/" + attack[9] + ")</span> " +
