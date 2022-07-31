@@ -149,7 +149,7 @@
         location.reload();
     });
 
-    var socket = io("https://"+window.location.hostname+":3000");
+    var socket = io("https://" + window.location.hostname + ":3000");
     socket.on("alert", (message) => {
         console.log(message.event_data);
         pushToAttackDiv(message.event_data);
@@ -206,7 +206,7 @@
 
     function pushToAttackDiv(eventdata) {
         attack = eventdata.split(",");
-        $('#attackdiv').append(attack[4] + " (" + attack[0] + ","+attack[1]+") " +
+        $('#attackdiv').append(attack[4] + " (" + attack[0] + ") " +
             " <span style='color:red'>attacks</span> " +
             attack[7] +
             " <span style='color:steelblue'>(" + attack[8] + "/" + attack[9] + ")</span> " +
