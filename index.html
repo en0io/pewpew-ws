@@ -139,7 +139,7 @@
         location.reload();
     });
 
-    var socket = io("https://" + window.location.hostname + "/api/ws/map");
+    var socket = io("https://" + window.location.hostname);
     socket.on("alert", (message) => {
         console.log(message.event_data);
         pushToAttackDiv(message.event_data);
