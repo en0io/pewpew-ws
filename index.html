@@ -141,11 +141,8 @@
 
     var socket = io("https://" + window.location.hostname);
     socket.on("alert", (message) => {
-        console.log(message.event_data);
         pushToAttackDiv(message.event_data);
         drawHit(message.event_data);
-
-
     })
     socket.on('connect', () => {
         console.log('connected!');
@@ -158,8 +155,6 @@
         $("#connstat").html("disconnected");
         $("#connstat").addClass("disconnected");
         $("#connstat").removeClass("connected");
-
-
     });
 
     function about() {
@@ -178,8 +173,9 @@
         }
         return color;
     }
+
     function lookupColor(comment) {
-        switch (comment) {
+        switch (comment.trim()) {
             case "fail2ban found":
                 c = "deepskyblue";
                 break;
@@ -192,6 +188,7 @@
         }
         return c;
     }
+
     function drawHit(eventdata) {
         attack = eventdata.split(",");
         if (optionRainbows === true) {
@@ -211,7 +208,7 @@
         });
         map.bubbles(boom, {
             popupTemplate: function (geo, data) {
-                return '<div class="hoverinfo"><p>Reason: '+attack[10]+'</p><p>Source: '+attack[0]+'</p><p>' + attack[8] + "/" + attack[9] + '</p></div>';
+                return '<div class="hoverinfo"><p>Reason: ' + attack[10] + '</p><p>Source: ' + attack[0] + '</p><p>' + attack[8] + "/" + attack[9] + '</p></div>';
             }
         });
         if (optionSound === true) {
@@ -220,15 +217,16 @@
     }
 
 
-
     function pushToAttackDiv(eventdata) {
         attack = eventdata.split(",");
-        $('#attackdiv').append(attack[4] + " (" + attack[0] + ") " +
+        $('#attackdiv').append('<span class="attackdiv_entry">' + attack[4] + " (" + attack[0] + ") " +
             " <span style='color:red'>attacks</span> " +
             attack[7] +
-            " <span style='color:steelblue'>(" + attack[8] + "/" + attack[9] + ", " + attack[10] + ")</span> " +
-            "<br/>");
-        $('#attackdiv').animate({scrollTop: $('#attackdiv').prop("scrollHeight")}, 500);
+            " <span style='color:steelblue'>(" + attack[8] + "/" + attack[9] + ", " + attack[10] + ")</span><br/></span>");
+        $('#attackdiv').animate({scrollTop: $('#attackdiv').prop("scrollHeight")}, 500);/**/
+        while ($('.attackdiv_entry').length > 50) {
+            $('.attackdiv_entry').first().remove();
+        }
     }
 
     function toggleColors() {
