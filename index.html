@@ -143,6 +143,7 @@
     socket.on("alert", (message) => {
         pushToAttackDiv(message.event_data);
         drawHit(message.event_data);
+        delete(message);
     })
     socket.on('connect', () => {
         console.log('connected!');
@@ -188,6 +189,7 @@
             default:
                 c = "deeppink";
         }
+        delete comment;
         return c;
     }
 
@@ -216,6 +218,9 @@
         if (optionSound === true) {
             document.getElementById("chirp").play();
         }
+        delete attack;
+        delete color;
+        return;
     }
 
 
@@ -229,6 +234,8 @@
         while ($('.attackdiv_entry').length > 50) {
             $('.attackdiv_entry').first().remove();
         }
+        delete attack;
+        return;
     }
 
     function toggleColors() {
