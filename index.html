@@ -7,7 +7,7 @@
     <script src="static/datamaps.world.min.js?v=1" cat></script>
     <script src="static/jquery-2.1.1.min.js"></script>
     <script src="static/jquery.simplemodal-1.4.4.js"></script>
-    <script src="static/socket.io.js"></script>
+
     <link href="static/app.css" rel="stylesheet">
     <link href="static/font-awesome.min.css" rel="stylesheet">
     <title>Project Maka Live Map</title>
@@ -139,23 +139,38 @@
         location.reload();
     });
 
-    var socket = io("https://" + window.location.hostname);
-    socket.on("alert", (message) => {
-        pushToAttackDiv(message.event_data);
-        drawHit(message.event_data);
-        delete(message);
-    })
-    socket.on('connect', () => {
-        console.log('connected!');
-        $("#connstat").html("live");
-        $("#connstat").addClass("connected");
-        $("#connstat").removeClass("disconnected");
-    });
-    socket.on('disconnect', () => {
-        console.log('connected!');
-        $("#connstat").html("disconnected");
-        $("#connstat").addClass("disconnected");
-        $("#connstat").removeClass("connected");
+    function establish_websocket_conn() {
+        var ws = new WebSocket('ws://localhost:4000');
+        ws.onopen = function () {
+            // subscribe to some channels
+            if (typeof retry !== 'undefined')
+                clearInterval(retry)
+            console.log('connected!');
+            $("#connstat").html("live");
+            $("#connstat").addClass("connected");
+            $("#connstat").removeClass("disconnected");
+        };
+        ws.onmessage = function (event) {
+            drawHit(event.data);
+            pushToAttackDiv(event.data);
+        };
+        ws.onerror = function (err) {
+            console.error('Socket encountered error: ', err.message, 'Closing socket');
+            ws.close();
+        };
+        ws.onclose = (event) => {
+            console.log('The connection has been closed, retrying in 1s');
+            $("#connstat").html("disconnected");
+            $("#connstat").addClass("disconnected");
+            $("#connstat").removeClass("connected");
+            retry = setInterval(function () {
+                establish_websocket_conn();
+            }, 1000);
+        };
+    }
+    //Open the connection
+    $(document).ready(function () {
+        establish_websocket_conn();
     });
 
     function about() {
