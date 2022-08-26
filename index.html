@@ -140,7 +140,7 @@
     });
 
     function establish_websocket_conn() {
-        var ws = new WebSocket('wss://' + window.location.hostname);
+        var ws = new WebSocket('wss://' + window.location.hostname+'/ws');
         ws.onopen = function () {
             // subscribe to some channels
             if (typeof retry !== 'undefined')
