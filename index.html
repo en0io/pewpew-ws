@@ -140,7 +140,7 @@
     });
 
     function establish_websocket_conn() {
-        var ws = new WebSocket('ws://localhost:3000');
+        var ws = new WebSocket('ws://' + window.location.hostname);
         ws.onopen = function () {
             // subscribe to some channels
             if (typeof retry !== 'undefined')
@@ -168,6 +168,7 @@
             }, 1000);
         };
     }
+
     //Open the connection
     $(document).ready(function () {
         establish_websocket_conn();
