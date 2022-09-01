@@ -151,8 +151,10 @@
             $("#connstat").removeClass("disconnected");
         };
         ws.onmessage = function (event) {
-            drawHit(event.data);
-            pushToAttackDiv(event.data);
+            if (!document.hidden) {
+                drawHit(event.data);
+                pushToAttackDiv(event.data);
+            }
         };
         ws.onerror = function (err) {
             console.error('Socket encountered error: ', err.message, 'Closing socket');
@@ -240,7 +242,6 @@
         delete color;
         return;
     }
-
 
     function pushToAttackDiv(eventdata) {
         attack = eventdata.split(",");
