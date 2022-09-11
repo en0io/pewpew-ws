@@ -29,6 +29,7 @@ body {
     padding:5px;
     bottom:0px;
     overflow-y: auto;
+    overflow: hidden;
 }
 
 #container1 {
