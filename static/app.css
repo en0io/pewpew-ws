@@ -20,10 +20,10 @@ body {
 
 #attackdiv {
     font-family: monospace;
-    font-size:10px;
+    font-size:18px;
     position:fixed;
     width:50%;
-    height:100px;
+    height:200px;
     color:white;
     background-color:black;
     padding:5px;
