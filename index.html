@@ -1,282 +1,72 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
+    <link href="static/app.css" rel="stylesheet">
+    <link href="static/font-awesome.min.css" rel="stylesheet">
+    <title>Project Maka Live Map</title>
+</head>
+<body>
+    <audio id="chirp" src="static/chirp.mp3" preload="auto"></audio>
+
+    <center>
+        <div id="container1"></div>
+    </center>
+    <div id="titlediv">Project Maka Live Map (<span id="connstat" class="disconnected">disconnected</span>)</div>
+    <div id="attackdiv"></div>
+    <div id="aboutdiv"><i class="fa fa-gear fa-2x" onClick="about();"></i></div>
+    
+    <div id="ccdiv">
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License"
+            style="border-width:0"
+            src="static/80x15.png"/></a>
+        </div>
+
+        <div id="about">
+            <h3>Settings</h3>
+            <p>Toggle Sound:
+                <a target="_self" class="toggle" onclick="toggleSound()"><span id="sound-status">Turn On</span></a>
+            </p>
+            <p>Toggle Rainbows:
+                <a target="_self" class="toggle" onclick="toggleColors()"><span id="rainbow-status">Turn On</span></a>
+            </p>
+            <h3>About</h3>
+            This was forked from hrbrmstr/pewpew map.
+            The original used statistical models to generate fictional attacks, but this deployment was modified to use
+            real-time data provided the Project Maka backend via
+            pewpew-ws-server.
+        </br>
+        The Project Maka backend is not currently publicly released, but the event ingestion controller passes data to a
+        RabbitMQ queue, which is picked up by pewpew-ws-server and broadcasted to this page.
+
+        <h3>Links:</h3>
+        <span><a href="https://github.com/en0io/pewpew-ws">pewpew-ws</a> (this page!)</span> </br>
+        <span><a href="https://github.com/en0io/pewpew-ws-server">pewpew-ws-server</a> (socket.io backend + rabbitmq client)</span> </br>
+        <span><a href="http://github.com/hrbrmstr/pewpew">hrbrmstr/pewpew</a> (original pewpew map)</span></br>
+
+        <h4>pewpew-ws is mainatained and hosted by:</h4>
+        <span><a href="https://arnhemnetworks.com">Arnhem Networks</a></span></br>
+        <span><a href="https://s.en0.io">Project Maka</a></span></br>
+        <span><a href="https://en0.io">en0</a></span></br>
+
+        <h4>the original pewpew was brought to you by:</h4>
+        <span><a target=_blank href="http://twitter.com/alexcpsec">@alexcpsec</a></span></br>
+        <span><a target=_blank href="http://twitter.com/hrbrmstr">@hrbrmstr</a></span></br>
+        <span><a target=_blank href="http://dds.ec/blog">Data-Driven Security</a></span></br>
+
+        <h4>Third-Party Content:</h4>
+        <span><a href="https://d3js.org/">D3js</a></span></br>
+        <span>GeoLite2 data created by MaxMind, available from <a href="https://www.maxmind.com">https://www.maxmind.com</a></span></br>
+    </div>
+
+    <a href="#!" class="modal-close" title="Close this modal"
+    data-dismiss="modal" data-close="Close">&times;</a>
+
     <script src="static/d3.v3.min.js"></script>
     <script src="static/d3.geo.projection.v0.min.js"></script>
     <script src="static/topojson.v1.min.js"></script>
     <script src="static/datamaps.world.min.js?v=1" cat></script>
     <script src="static/jquery-2.1.1.min.js"></script>
     <script src="static/jquery.simplemodal-1.4.4.js"></script>
-
-    <link href="static/app.css" rel="stylesheet">
-    <link href="static/font-awesome.min.css" rel="stylesheet">
-    <title>Project Maka Live Map</title>
-</head>
-<body>
-<audio id="chirp" src="static/chirp.mp3" preload="auto"></audio>
-
-<center>
-    <div id="container1"></div>
-</center>
-<div id="titlediv">Project Maka Live Map (<span id="connstat" class="disconnected">disconnected</span>)</div>
-<div id="attackdiv"></div>
-<div id="aboutdiv"><i class="fa fa-gear fa-2x" onClick="about();"></i></div>
-
-<div id="ccdiv">
-    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License"
-                                                                                style="border-width:0"
-                                                                                src="static/80x15.png"/></a>
-</div>
-
-<div id="about">
-    <h3>Settings</h3>
-    <p>Toggle Sound:
-        <a target="_self" class="toggle" onclick="toggleSound()"><span id="sound-status">Turn On</span></a>
-    </p>
-    <p>Toggle Rainbows:
-        <a target="_self" class="toggle" onclick="toggleColors()"><span id="rainbow-status">Turn On</span></a>
-    </p>
-    <h3>About</h3>
-    This was forked from hrbrmstr/pewpew map.
-    The original used statistical models to generate fictional attacks, but this deployment was modified to use
-    real-time data provided the Project Maka backend via
-    pewpew-ws-server.
-    </br>
-    The Project Maka backend is not currently publicly released, but the event ingestion controller passes data to a
-    RabbitMQ queue, which is picked up by pewpew-ws-server and broadcasted to this page.
-
-    <h3>Links:</h3>
-    <span><a href="https://github.com/en0io/pewpew-ws">pewpew-ws</a> (this page!)</span> </br>
-    <span><a href="https://github.com/en0io/pewpew-ws-server">pewpew-ws-server</a> (socket.io backend + rabbitmq client)</span> </br>
-    <span><a href="http://github.com/hrbrmstr/pewpew">hrbrmstr/pewpew</a> (original pewpew map)</span></br>
-
-    <h4>pewpew-ws is mainatained and hosted by:</h4>
-    <span><a href="https://arnhemnetworks.com">Arnhem Networks</a></span></br>
-    <span><a href="https://s.en0.io">Project Maka</a></span></br>
-    <span><a href="https://en0.io">en0</a></span></br>
-
-    <h4>the original pewpew was brought to you by:</h4>
-    <span><a target=_blank href="http://twitter.com/alexcpsec">@alexcpsec</a></span></br>
-    <span><a target=_blank href="http://twitter.com/hrbrmstr">@hrbrmstr</a></span></br>
-    <span><a target=_blank href="http://dds.ec/blog">Data-Driven Security</a></span></br>
-
-    <h4>Third-Party Content:</h4>
-    <span><a href="https://d3js.org/">D3js</a></span></br>
-    <span>GeoLite2 data created by MaxMind, available from <a href="https://www.maxmind.com">https://www.maxmind.com</a></span></br>
-
-</div>
-
-<a href="#!" class="modal-close" title="Close this modal"
-   data-dismiss="modal" data-close="Close">&times;</a>
-
-<script>
-    optionSound = false;
-    optionRainbows = false;
-    var map = new Datamap({
-        scope: 'world',
-        element: document.getElementById('container1'),
-        projection: 'winkel3',
-        fills: {defaultFill: 'black',},
-        geographyConfig: {
-            dataUrl: null,
-            hideAntarctica: true,
-            borderWidth: 0.75,
-            borderColor: '#4393c3',
-            popupTemplate: function (geography, data) {
-                return '<div class="hoverinfo" style="color:white;background:black">' +
-                    geography.properties.name + '</div>';
-            },
-            popupOnHover: true,
-            highlightOnHover: false,
-            highlightFillColor: 'black',
-            highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
-            highlightBorderWidth: 2
-        },
-    })
-
-    function FixedQueue(size, initialValues) {
-        initialValues = (initialValues || []);
-        var queue = Array.apply(null, initialValues);
-        queue.fixedSize = size;
-        queue.push = FixedQueue.push;
-        queue.splice = FixedQueue.splice;
-        queue.unshift = FixedQueue.unshift;
-        FixedQueue.trimTail.call(queue);
-        return (queue);
-    }
-
-    FixedQueue.trimHead = function () {
-        if (this.length <= this.fixedSize) {
-            return;
-        }
-        Array.prototype.splice.call(this, 0, (this.length - this.fixedSize));
-    };
-    FixedQueue.trimTail = function () {
-        if (this.length <= this.fixedSize) {
-            return;
-        }
-        Array.prototype.splice.call(this, this.fixedSize, (this.length - this.fixedSize)
-        );
-    };
-    FixedQueue.wrapMethod = function (methodName, trimMethod) {
-        var wrapper = function () {
-            var method = Array.prototype[methodName];
-            var result = method.apply(this, arguments);
-            trimMethod.call(this);
-            return (result);
-        };
-        return (wrapper);
-    };
-
-    FixedQueue.push = FixedQueue.wrapMethod("push", FixedQueue.trimHead);
-    FixedQueue.splice = FixedQueue.wrapMethod("splice", FixedQueue.trimTail);
-    FixedQueue.unshift = FixedQueue.wrapMethod("unshift", FixedQueue.trimTail);
-
-    var hits = FixedQueue(7, []);
-    var boom = FixedQueue(7, []);
-
-    d3.select(window).on('resize', function () {
-        location.reload();
-    });
-
-    function establish_websocket_conn() {
-        var ws = new WebSocket('wss://' + window.location.hostname + '/ws/');
-        ws.onopen = function () {
-            // subscribe to some channels
-            if (typeof retry !== 'undefined')
-                clearInterval(retry)
-            console.log('connected!');
-            $("#connstat").html("live");
-            $("#connstat").addClass("connected");
-            $("#connstat").removeClass("disconnected");
-        };
-        ws.onmessage = function (event) {
-            if (!document.hidden) {
-                drawHit(event.data);
-                pushToAttackDiv(event.data);
-            }
-        };
-        ws.onerror = function (err) {
-            console.error('Socket encountered error: ', err.message, 'Closing socket');
-            ws.close();
-        };
-        ws.onclose = (event) => {
-            console.log('The connection has been closed, retrying in 1s');
-            $("#connstat").html("disconnected");
-            $("#connstat").addClass("disconnected");
-            $("#connstat").removeClass("connected");
-            if (typeof retry == 'undefined') {
-                retry = setInterval(function () {
-                    establish_websocket_conn();
-                }, 1000);
-            }
-        };
-    }
-
-    //Open the connection
-    $(document).ready(function () {
-        establish_websocket_conn();
-    });
-
-    function about() {
-        $("#about").modal();
-    }
-
-    colorIndex = 0;
-
-    function getRandomColor() {
-        colors = ['darkviolet', 'darkmagenta', 'deepskyblue', 'mediumspringgreen', 'gold', 'orange', 'red',];
-        color = colors[colorIndex];
-        if (colorIndex < colors.length - 1) {
-            colorIndex++;
-        } else {
-            colorIndex = 0;
-        }
-        return color;
-    }
-
-    function lookupColor(comment) {
-        switch (comment.trim()) {
-            case "fail2ban found":
-                c = "deepskyblue";
-                break;
-            case "fail2ban block":
-                c = "darkviolet";
-                break;
-            case "rejected by firewall":
-                c = "crimson";
-                break;
-            default:
-                c = "deeppink";
-        }
-        delete comment;
-        return c;
-    }
-
-    function drawHit(eventdata) {
-        attack = eventdata.split(",");
-        if (optionRainbows === true) {
-            color = getRandomColor();
-        } else {
-            color = lookupColor(attack[10]);
-        }
-
-        hits.push({
-            origin: {latitude: Number(attack[2]).toFixed(4), longitude: Number(attack[3]).toFixed(4)},
-            destination: {latitude: Number(attack[5]).toFixed(4), longitude: Number(attack[6]).toFixed(4)}
-        });
-        map.arc(hits, {strokeWidth: 2, strokeColor: color});
-        boom.push({
-            radius: 7, latitude: Number(attack[5]).toFixed(4), longitude: Number(attack[6]).toFixed(4),
-            fillOpacity: 0.5, attk: attack[8] + "/" + attack[9]
-        });
-        map.bubbles(boom, {
-            popupTemplate: function (geo, data) {
-                return '<div class="hoverinfo"><p>Reason: ' + attack[10] + '</p><p>Source: ' + attack[0] + '</p><p>' + attack[8] + "/" + attack[9] + '</p></div>';
-            }
-        });
-        if (optionSound === true) {
-            document.getElementById("chirp").play();
-        }
-        delete attack;
-        delete color;
-        return;
-    }
-
-    function pushToAttackDiv(eventdata) {
-        attack = eventdata.split(",");
-        $('#attackdiv').append('<span class="attackdiv_entry">' + attack[4] + " (" + attack[0] + ") " +
-            " <span style='color:red'>attacks</span> " +
-            attack[7] +
-            " <span style='color:steelblue'>(" + attack[8] + "/" + attack[9] + ", " + attack[10] + ")</span><br/></span>");
-        $('#attackdiv').animate({scrollTop: $('#attackdiv').prop("scrollHeight")}, 500);/**/
-        while ($('.attackdiv_entry').length > 50) {
-            $('.attackdiv_entry').first().remove();
-        }
-        delete attack;
-        return;
-    }
-
-    function toggleColors() {
-        if (optionRainbows === true) {
-            optionRainbows = false;
-            $("#rainbow-status").html("Turn On")
-        } else {
-            optionRainbows = true;
-            $("#rainbow-status").html("Turn Off")
-        }
-    }
-
-    function toggleSound() {
-        if (optionSound === true) {
-            optionSound = false;
-            $("#sound-status").html("Turn On")
-        } else {
-            optionSound = true;
-            $("#sound-status").html("Turn Off")
-        }
-    }
-</script>
-
+    <script src="static/app.js"></script>
 </body>
 </html>
