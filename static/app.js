@@ -182,19 +182,19 @@ function drawHit(eventdata) {
     latitude: Number(eventdata[5]).toFixed(4),
     longitude: Number(eventdata[6]).toFixed(4),
     fillOpacity: 0.5,
-    attk: attack[8] + "/" + attack[9],
+    attk: eventdata[8] + "/" + eventdata[9],
   });
   map.bubbles(boom, {
     popupTemplate: function (geo, data) {
       return (
         '<div class="hoverinfo"><p>Reason: ' +
-        attack[10] +
+        eventdata[10] +
         "</p><p>Source: " +
-        attack[0] +
+        eventdata[0] +
         "</p><p>" +
-        attack[8] +
+        eventdata[8] +
         "/" +
-        attack[9] +
+        eventdata[9] +
         "</p></div>"
       );
     },
