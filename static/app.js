@@ -85,8 +85,13 @@ function establish_websocket_conn() {
   };
   ws.onmessage = function (event) {
     if (!document.hidden) {
-      drawHit(event.data);
-      pushToAttackDiv(event.data);
+      eventinfo = eventdata.split(",");
+      if(eventinfo[2] != '' || eventinfo[3] != '' || eventinfo[5] != '' || eventinfo[6] != '')
+      {
+        drawHit(eventinfo);
+        pushToAttackDiv(eventinfo);
+      }
+
     }
   };
   ws.onerror = function (err) {
@@ -155,28 +160,27 @@ function lookupColor(comment) {
 }
 
 function drawHit(eventdata) {
-  attack = eventdata.split(",");
   if (optionRainbows === true) {
     color = getRandomColor();
   } else {
-    color = lookupColor(attack[10]);
+    color = lookupColor(eventdata[10]);
   }
 
   hits.push({
     origin: {
-      latitude: Number(attack[2]).toFixed(4),
-      longitude: Number(attack[3]).toFixed(4),
+      latitude: Number(eventdata[2]).toFixed(4),
+      longitude: Number(eventdata[3]).toFixed(4),
     },
     destination: {
-      latitude: Number(attack[5]).toFixed(4),
-      longitude: Number(attack[6]).toFixed(4),
+      latitude: Number(eventdata[5]).toFixed(4),
+      longitude: Number(eventdata[6]).toFixed(4),
     },
   });
   map.arc(hits, { strokeWidth: 2, strokeColor: color });
   boom.push({
     radius: 7,
-    latitude: Number(attack[5]).toFixed(4),
-    longitude: Number(attack[6]).toFixed(4),
+    latitude: Number(eventdata[5]).toFixed(4),
+    longitude: Number(eventdata[6]).toFixed(4),
     fillOpacity: 0.5,
     attk: attack[8] + "/" + attack[9],
   });
@@ -204,21 +208,20 @@ function drawHit(eventdata) {
 }
 
 function pushToAttackDiv(eventdata) {
-  attack = eventdata.split(",");
   $("#attackdiv").append(
     '<span class="attackdiv_entry">' +
-      attack[4] +
+      eventdata[4] +
       " (" +
-      attack[0] +
+      eventdata[0] +
       ") " +
       " <span style='color:red'>attacks</span> " +
-      attack[7] +
+      eventdata[7] +
       " <span style='color:steelblue'>(" +
-      attack[8] +
+      eventdata[8] +
       "/" +
-      attack[9] +
+      eventdata[9] +
       ", " +
-      attack[10] +
+      eventdata[10] +
       ")</span><br/></span>"
   );
   $("#attackdiv").animate(
@@ -228,7 +231,7 @@ function pushToAttackDiv(eventdata) {
   while ($(".attackdiv_entry").length > 50) {
     $(".attackdiv_entry").first().remove();
   }
-  delete attack;
+  delete eventdata;
   return;
 }
 
