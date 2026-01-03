@@ -85,7 +85,7 @@ function establish_websocket_conn() {
   };
   ws.onmessage = function (event) {
     if (!document.hidden) {
-      eventinfo = event.split(",");
+      eventinfo = event.data.split(",");
       if(eventinfo[2] != '' || eventinfo[3] != '' || eventinfo[5] != '' || eventinfo[6] != '')
       {
         drawHit(eventinfo);
