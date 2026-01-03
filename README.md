@@ -6,7 +6,7 @@ pewpew-ws is a fork of @alexcpsec & @hrbrmstr's original project [https://github
 
 The format of the CSV that this receives is as follows:
 
-`$sourceip,$isp,$sourcelat,$sourcelon,$sourceISO3166,$destlat,$destlon,$destISO3166,$proto,$destport,$comment`
+`$sourceip,$isp,$sourcelat,$sourcelon,$sourceISO3166,$destlat,$destlon,$destISO3166,$proto,$destport,$comment,$incidentid`
 
 The latitude, longitude, ISP and ISO3166 country codes are pulled from GeoLite2 by the Project Maka backend.
 
